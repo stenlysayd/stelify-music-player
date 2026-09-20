@@ -1,6 +1,14 @@
 {
-  "name": "simple-music-player",
-  "version": "0.1.0",
+  "name": "stelify-music-player",
+  "version": "1.0.0",
+  "description": "High-fidelity Web Music Player & PWA with Document Picture-in-Picture, synchronized LRC karaoke lyrics, anime Waifu mode, and Aura AI companion",
+  "license": "MIT",
+  "author": "Stenly Sayd <stenlysayd@gmail.com> (https://github.com/stenlysayd)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/stenlysayd/stelify-music-player.git"
+  },
+  "homepage": "https://github.com/stenlysayd/stelify-music-player",
   "private": true,
   "scripts": {
     "dev": "next dev",
