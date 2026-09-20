@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Song {
+  id        Int      @id @default(autoincrement())
+  title     String
+  artist    String
+  album     String?
+  duration  String?
+  coverUrl  String?
+  audioUrl  String
+  lyrics    String?
+  isLiked   Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // --- FITUR BARU (GOD MODE LEVEL 3) ---
+  genre     String?  // Contoh: "Pop, J-Pop, Ballad" (Max 10)
+  mood      String?  // Contoh: "Sad, Heartbreak, Galau" (Max 20 - BARU!)
+  playCount Int         @default(0) // Untuk Statistik
+  histories History[]   // Untuk mencatat riwayat pemutaran
+  // -------------------------------------
+
+  playlists Playlist[] 
+}
+
+model Playlist {
+  id          Int      @id @default(autoincrement())
+  name        String   // ✅ Tetap 'name' (sesuai request)
+  description String?
+  coverUrl    String?
+  createdAt   DateTime @default(now())
+  
+  songs       Song[]   
+}
+
+// MODEL BARU: HISTORY
+// (Penting agar Aura bisa tau lagu apa yang sering kamu putar)
+model History {
+  id       Int      @id @default(autoincrement())
+  songId   Int
+  playedAt DateTime @default(now())
+
+  song Song @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@index([songId])
+  @@index([playedAt])
+}

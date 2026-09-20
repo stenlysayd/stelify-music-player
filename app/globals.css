@@ -1,0 +1,154 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #000000;
+  --foreground: #ededed;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Global keyboard focus indicator & form element font inheritance */
+@layer base {
+  button, input, optgroup, select, textarea {
+    font-family: inherit;
+  }
+  *:focus-visible {
+    outline: 2px solid #22c55e;
+    outline-offset: 2px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- OPTIMASI KHUSUS HP (MOBILE PERFORMANCE) --- */
+@media (max-width: 768px) {
+  /* ✅ FIX: JANGAN MATIKAN SEMUA BACKDROP-FILTER!
+     Hanya matikan yang BUKAN dari Atmosphere atau komponen penting */
+  
+  /* Matikan backdrop-filter HANYA di komponen UI berat seperti ChatPanel, Sidebar, Modal */
+  .chat-panel-mobile,
+  .sidebar-mobile,
+  .modal-backdrop,
+  [class*="backdrop-blur"]:not([class*="atmosphere"]) {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* KECUALIKAN: Atmosphere backdrop-blur tetap aktif (penting untuk efek fog/mist) */
+  /* Tidak ada rule khusus, biarkan Atmosphere.tsx mengatur sendiri */
+
+  /* Fallback: Ganti background transparan/blur menjadi warna solid gelap */
+  /* KECUALI untuk elemen Atmosphere (jangan ganggu) */
+  .bg-black\/20:not(.atmosphere-element),
+  .bg-black\/50:not(.atmosphere-element),
+  .bg-zinc-900\/95:not(.atmosphere-element),
+  .bg-zinc-900\/50:not(.atmosphere-element) {
+    background-color: #09090b !important; /* Warna Zinc-950 (Hampir hitam) */
+    opacity: 1 !important;
+  }
+
+  /* Kurangi animasi berat di HP (tapi JANGAN matikan animasi Atmosphere) */
+  .animate-pulse:not(.atmosphere-element),
+  .group-hover\:scale-110:not(.atmosphere-element) {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+@layer utilities {
+  /* 1. SIDEBAR SCROLLBAR (Auto Hide) */
+  .scrollbar-sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+  .scrollbar-sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Default: Transparan (Tidak Terlihat) */
+  .scrollbar-sidebar::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.08); 
+    border-radius: 10px;
+    transition: background-color 0.3s; /* Efek transisi halus */
+  }
+  /* Saat Mouse di atas Sidebar: Munculkan Warna */
+  .scrollbar-sidebar:hover::-webkit-scrollbar-thumb {
+    background-color: #27272a; /* Zinc-800 */
+  }
+  
+  /* 2. MAIN CONTENT SCROLLBAR (Auto Hide - Spotify Style) */
+  .scrollbar-main::-webkit-scrollbar {
+    width: 12px;
+  }
+  .scrollbar-main::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Default: Transparan */
+  .scrollbar-main::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.08); 
+    border-radius: 10px;
+    border: 3px solid transparent; 
+    background-clip: content-box;
+    transition: background-color 0.3s;
+  }
+  /* Saat Mouse di atas Konten Utama: Munculkan Warna */
+  .scrollbar-main:hover::-webkit-scrollbar-thumb {
+    background-color: #52525b; /* Zinc-600 */
+  }
+  /* Saat Mouse Klik/Hover Scrollbar-nya langsung: Lebih Terang */
+  .scrollbar-main::-webkit-scrollbar-thumb:hover {
+    background-color: #a1a1aa; /* Zinc-400 */
+  }
+
+  /* 3. LYRICS SCROLLBAR (Auto Hide - Glassy) */
+  .scrollbar-lyrics::-webkit-scrollbar {
+    width: 8px;
+  }
+  .scrollbar-lyrics::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  /* Default: Transparan */
+  .scrollbar-lyrics::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    transition: background-color 0.3s;
+  }
+  /* Saat Mouse di atas Lirik: Munculkan Warna */
+  .scrollbar-lyrics:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  .scrollbar-lyrics::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Firefox Support (Auto Hide tidak semulus Webkit, tapi ini fallbacknya) */
+  .scrollbar-sidebar { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent; }
+  .scrollbar-sidebar:hover { scrollbar-color: #27272a transparent; }
+
+  .scrollbar-main { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent; }
+  .scrollbar-main:hover { scrollbar-color: #52525b transparent; }
+
+  .scrollbar-lyrics { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.08) transparent; }
+  .scrollbar-lyrics:hover { scrollbar-color: rgba(255,255,255,0.2) transparent; }
+  
+  /* UTILITY HIDE (Tetap biarkan ini) */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

@@ -1,0 +1,64 @@
+# --- Dependencies ---
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# --- Next.js Build Output ---
+/.next/
+/out/
+/build
+
+# --- Environment Variables (RAHASIA - JANGAN DI UPLOAD) ---
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env*.local
+
+# --- Database SQLite (JANGAN DI UPLOAD) ---
+# Ini penting agar dev.db Anda yang berisi data tidak ikut terupload
+*.db
+*.db-journal
+/prisma/*.db
+/prisma/*.db-journal
+
+# --- FILE LAGU MP3 & UPLOADS (WAJIB SKIP KARENA 4.5GB) ---
+# Folder ini akan diabaikan oleh Git, sehingga upload ke GitHub lancar
+/public/uploads/
+/public/music/
+/public/covers/
+
+# --- Generated PWA assets ---
+/public/sw.js
+/public/workbox-*.js
+/public/swe-worker-*.js
+
+# --- Logs & Debug ---
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.next-dev*.log
+aura-tagging-session.json
+/coverage
+
+# --- IDE & System ---
+.DS_Store
+*.pem
+.vscode/
+.idea/
+
+# --- Vercel ---
+.vercel
+
+# --- TypeScript ---
+*.tsbuildinfo
+next-env.d.ts
+/app/generated/prisma
